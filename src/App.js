@@ -1,10 +1,12 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 
-import HomeUser from '~/pages/user/Home';
-import HomeAdmin from '~/pages/admin/Home';
-import Login from '~/pages/Login';
-import Register from '~/pages/Register';
+import { publicRoutes, userRoutes, adminRoutes } from '~/routes';
+import NotFound from '~/pages/NotFound';
+import DefaultLayout from '~/components/Layouts/Admin/DefaultLayout';
+import DefaultLayoutUser from './components/Layouts/user/DefaultLayout';
+
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const checkSessionValidity = () => {
     const tokenExpiration = localStorage.getItem('expirationTime');
@@ -22,24 +24,42 @@ const checkSessionValidity = () => {
 
 function App() {
     var token = localStorage.getItem('token');
+    var isAdmin = token === 'admin';
     var isLoggedIn = !!token;
-    const isAdmin = token === 'admin';
     var isSessionValid = checkSessionValidity();
+
     return (
         <Router>
             <div className="App">
                 <Routes>
-                    <Route
-                        path="/home-user"
-                        element={isLoggedIn && isSessionValid && !isAdmin ? <HomeUser /> : <Navigate to="/login" />}
-                    />
-                    <Route
-                        path="/home-admin"
-                        element={isLoggedIn && isSessionValid && isAdmin ? <HomeAdmin /> : <Navigate to="/login" />}
-                    />
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/register" element={<Register />} />
+                    {isLoggedIn && isSessionValid ? (
+                        isAdmin ? (
+                            adminRoutes.map((route, index) => {
+                                let Layout = DefaultLayout;
+                                return (
+                                    <Route key={index} path={route.path} element={<Layout>{route.component}</Layout>} />
+                                );
+                            })
+                        ) : (
+                            userRoutes.map((route, index) => {
+                                let LayoutUser = DefaultLayoutUser;
+                                return (
+                                    <Route
+                                        key={index}
+                                        path={route.path}
+                                        element={<LayoutUser>{route.component}</LayoutUser>}
+                                    />
+                                );
+                            })
+                        )
+                    ) : (
+                        <Navigate to="/login" />
+                    )}
+                    {publicRoutes.map((route, index) => {
+                        return <Route key={index} path={route.path} element={route.component} />;
+                    })}
                     <Route path="/" element={<Navigate to="/login" />} />
+                    <Route path="*" element={<NotFound />} />
                 </Routes>
             </div>
         </Router>

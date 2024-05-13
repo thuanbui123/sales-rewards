@@ -1,6 +1,6 @@
 import { request } from '~/utils/httpRequest';
 
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 
 const fetchData = async () => {
     try {
@@ -14,7 +14,7 @@ const fetchData = async () => {
     }
 };
 
-function Home() {
+function HomeUser() {
     useEffect(() => {
         fetchData();
     });
@@ -25,4 +25,4 @@ function Home() {
     );
 }
 
-export default Home;
+export default HomeUser;

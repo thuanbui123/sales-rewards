@@ -1,0 +1,19 @@
+.btn {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    color: #333;
+    background-color: #fff;
+    text-decoration: none;
+    width: 80px;
+    display: block;
+    text-align: center;
+    &:hover{
+        color: #fff;
+        background-color: var(--primary);
+        transition: all 0.3s;
+    }
+}
+
+.custom-modal {
+    background-color: rgba(0, 0, 0, 0.3);
+}

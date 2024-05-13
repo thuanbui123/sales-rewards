@@ -43,6 +43,7 @@ body {
   max-width: 480px;
   margin: 0 10px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  width: 480px;
 }
 .card .card-img-top {
   width: 100px;
@@ -76,3 +77,25 @@ label {
   margin-bottom: 12px;
 }
 
+.form-text {
+  font-size: 1.4rem;
+}
+
+.wrapper {
+  display: flex;
+  align-items: center;
+}
+
+.wrapper .input {
+  flex: 1;
+  margin-right: 8px;
+}
+
+.btn-toggle {
+  flex-shrink: 0;
+  width: 60px;
+  border-radius: 8px;
+  outline: none;
+  border: 1px solid #ccc;
+  height: 33.5px;
+}

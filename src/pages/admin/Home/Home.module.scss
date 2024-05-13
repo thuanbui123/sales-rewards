@@ -1,0 +1,17 @@
+.container {
+    max-width: 100%;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.title {
+    margin: 0 auto;
+}
+
+.search {
+    margin-right: 12px;
+}

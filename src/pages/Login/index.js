@@ -42,8 +42,6 @@ function LoginForm() {
             const res = await request('post', '/account/login', postData);
             let data = res.data;
 
-            console.log(data);
-
             if (!!data.username) {
                 if (data.username.toLowerCase() === 'admin') {
                     saveDataToSession(data.username, '/home-admin');
