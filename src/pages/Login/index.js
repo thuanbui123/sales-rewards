@@ -44,9 +44,9 @@ function LoginForm() {
 
             if (!!data.username) {
                 if (data.username.toLowerCase() === 'admin') {
-                    saveDataToSession(data.username, '/home-admin');
+                    saveDataToSession(data.username, '/admin/home');
                 } else {
-                    saveDataToSession(data.username, '/home-user');
+                    saveDataToSession(data.username, '/user/home');
                 }
 
                 window.location.reload();

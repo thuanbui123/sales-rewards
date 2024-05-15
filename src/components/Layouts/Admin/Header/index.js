@@ -12,10 +12,10 @@ function Header() {
                     <Link to="http://localhost:3000/admin/home">Sales rewards</Link>
                 </li>
                 <li>
-                    <Link to="#categories">Categories</Link>
+                    <Link to="http://localhost:3000/admin/categories">Categories</Link>
                 </li>
                 <li>
-                    <Link to="#products">Products</Link>
+                    <Link to="http://localhost:3000/admin/products">Products</Link>
                 </li>
                 <li>
                     <Link to="#user">User</Link>

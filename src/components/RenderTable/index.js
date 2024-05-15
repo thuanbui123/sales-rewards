@@ -1,17 +1,19 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable jsx-a11y/scope */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import classNames from 'classnames/bind';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Link } from 'react-router-dom';
 import styles from './RenderTable.module.scss';
 import { request } from '~/utils/httpRequest';
-import { Button, Modal } from 'react-bootstrap';
+import { Button, Form, Modal } from 'react-bootstrap';
 
 const cx = classNames.bind(styles);
 
 const RenderTable = ({ header, data, editPath, deletePath }) => {
     const [path, setPath] = useState('');
     const [show, setShow] = useState(false);
+    const [toggleStates, setToggleStates] = useState({});
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
@@ -35,32 +37,73 @@ const RenderTable = ({ header, data, editPath, deletePath }) => {
         }
     };
 
+    useEffect(() => {
+        // Khởi tạo toggleStates từ data ban đầu
+        const initialToggleStates = {};
+        data.forEach((row) => {
+            initialToggleStates[row.id] = row.isActive;
+        });
+        setToggleStates(initialToggleStates);
+    }, []);
+
+    const handleToggleChange = (e, id) => {
+        const { checked } = e.target;
+        setToggleStates((prevState) => ({
+            ...prevState,
+            [id]: checked,
+        }));
+
+        // Gọi API cập nhật trạng thái
+        updateStatusAPI(id, checked);
+    };
+
+    const updateStatusAPI = async (id, checked) => {};
+
     return (
-        <table className="table">
+        <table className="table table-striped table-bordered">
             <thead className="thead-light">
                 <tr>
+                    <th scope="col">#</th>
                     {header.map((value, index) => (
                         <th key={index} scope="col">
                             {value}
                         </th>
                     ))}
-                    <th scope="col">Edit</th>
+                    {editPath && <th scope="col">Edit</th>}
+
                     <th scope="col">Delete</th>
                 </tr>
             </thead>
             <tbody>
                 {data.map((row, rowIndex) => (
                     <tr key={rowIndex}>
-                        {Object.values(row).map((value, index) => (
-                            <td key={index} scope="row">
-                                {value}
+                        <td scope="row" className={cx('custom-row')}>
+                            {rowIndex + 1}
+                        </td>
+                        {Object.entries(row).map(([key, value], index) => (
+                            <td key={index} className={cx('custom-row')}>
+                                {key === 'isActive' ? (
+                                    <Form.Check
+                                        className={cx('pt-10')}
+                                        type="switch"
+                                        id={`custom-switch-${rowIndex}`}
+                                        checked={toggleStates[row.id] || false}
+                                        onChange={(e) => handleToggleChange(e, row.id)}
+                                    />
+                                ) : key === 'rewardPercentage' || key === 'discountValue' ? (
+                                    `${value}%`
+                                ) : (
+                                    value
+                                )}
                             </td>
                         ))}
-                        <td>
-                            <Link to={`${editPath}/${row.id}`} className={cx('btn')}>
-                                Edit
-                            </Link>
-                        </td>
+                        {editPath && (
+                            <td>
+                                <Link to={`${editPath}/${row.id}`} className={cx('btn', 'line-height')}>
+                                    Edit
+                                </Link>
+                            </td>
+                        )}
                         <td>
                             <Button className={cx('btn')} onClick={handleShow}>
                                 Delete
@@ -70,7 +113,7 @@ const RenderTable = ({ header, data, editPath, deletePath }) => {
                                     <Modal.Title>Confirm delete</Modal.Title>
                                 </Modal.Header>
                                 <Modal.Body>
-                                    <p>Do you want to implement data deletion method</p>
+                                    <p>Do you want to implement data deletion method?</p>
                                 </Modal.Body>
                                 <Modal.Footer>
                                     <Button variant="secondary" onClick={handleClose}>

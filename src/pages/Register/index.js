@@ -36,6 +36,8 @@ function Register() {
             switch (res.status) {
                 case 201:
                     setIsRegister(true);
+                    alert('Account registration successful!');
+                    navigate('/login');
                     break;
                 default:
                     break;

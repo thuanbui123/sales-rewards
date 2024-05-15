@@ -43,6 +43,10 @@ function EditCategory() {
 
     const handlePut = async (e) => {
         e.preventDefault();
+        if (nameCategory === '' || descriptionCategory === '') {
+            alert('Error: Please fill in all required fields correctly.');
+            return;
+        }
         try {
             const putData = {
                 id: 0,

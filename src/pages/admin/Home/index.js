@@ -26,7 +26,7 @@ function HomeAdmin() {
     const handleShowModalSearch = () => setShowModalSearch(true);
     const handleCloseModalSearch = () => setShowModalSearch(false);
 
-    const editPath = '/admin/home/edit';
+    const editPath = '/admin/categories/edit';
     const deletePath = '/categories/delete';
     useEffect(() => {
         let isMounted = true;
@@ -52,15 +52,19 @@ function HomeAdmin() {
     }, []);
 
     const headerObj = {
-        firstColumn: '#',
-        secondColumn: 'Tên loại sản phấm',
-        thirdColumn: 'Mô tả loại sản phẩm',
+        firstColumn: 'Id',
+        secondColumn: 'Name',
+        thirdColumn: 'Description',
     };
 
     const header = Object.values(headerObj);
 
     const handleAddCategory = async (e) => {
         e.preventDefault();
+        if (nameCategory === '' || descriptionCategory === '') {
+            alert('Error: Please fill in all required fields correctly.');
+            return;
+        }
         try {
             const postData = {
                 id: 0,
